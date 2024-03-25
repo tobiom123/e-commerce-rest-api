@@ -97,4 +97,4 @@ docker network inspect bridge
 ```
 Then replace assign the Gateway IP to DB_HOST within your .env
 
-The REST API should now be running and accessible at `http://localhost:80` or `http://localhost:8000`.
+The REST API should now be running and accessible at `http://localhost:80`.
