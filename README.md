@@ -98,3 +98,13 @@ docker network inspect bridge
 Then replace assign the Gateway IP to DB_HOST within your .env
 
 The REST API should now be running and accessible at `http://localhost:80`.
+
+# PART 2
+
+### Reflection Test
+
+Within terminal run the below command
+
+```bash
+php reflect.php
+```
