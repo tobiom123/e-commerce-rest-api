@@ -1,66 +1,100 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# E-Commerce REST API Project README
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Overview
 
-## About Laravel
+A RESTful API for a small and simple e-commerce platform.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Key Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Authentication:** Leveraging Breeze starter kit which utilises Sanctum.
+- **Endpoints:**
+    1. **List all items:** Lists all items where deleted_at IS NULL within items table.
+    2. **Place order:** Stores a new order, simulating payment processing.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Development Focus
 
-## Learning Laravel
+This project prioritises clean, maintainable code and efficient functionality, with an emphasis on:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **MVC Architecture:** Utilising Model-View-Controller components for organised code structure. The "View" component is represented by Laravel Resources for API responses.
+- **Laravel Ecosystem:** Leveraging Laravel features such as Eloquent for ORM, Requests for data validation, and Routes for API endpoint definition.
+- **Clean Code Practices:** Adhering to PSR-12 standards for code style and utilising PHP ^8.0 features to enhance readability and performance.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Testing
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+The project includes PHPUnit tests to ensure reliability and correctness of the API functionalities. I encourage you to run these tests via ``./vendor/bin/sail artisan test``
 
-## Laravel Sponsors
+## Getting Started
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Prerequisites
 
-### Premium Partners
+Before proceeding, make sure you have the following software installed on your machine:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+1. **Git**: Version control system for cloning the repository.
+2. **Docker**: Containerization platform for running the Laravel Sail environment.
+3. PHP ^8.1
+4. Composer
 
-## Contributing
+## Step 1: Clone the Repository
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Open your terminal and clone the repository for the REST API.
 
-## Code of Conduct
+```bash
+# Clone the Laravel Sail REST API repo
+git clone https://github.com/tobiom123/e-commerce-rest-api.git
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Step 2: Set up the Laravel Sail REST API
 
-## Security Vulnerabilities
+1. Change into the REST API directory.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+cd e-commerce-rest-api
+```
 
-## License
+2. Install dependencies and set up the environment.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+# Copy the example environment file and update it with your configuration
+cp .env.example .env
+
+# Install PHP dependencies
+composer install
+composer update
+```
+
+3. Run the Laravel Sail environment using Docker.
+
+```bash
+./vendor/bin/sail up
+
+# Generate the application key
+./vendor/bin/sail artisan key:generate
+
+# Install PHP dependencies within container
+./vendor/bin/sail composer install
+
+# Create the database tables
+./vendor/bin/sail artisan migrate
+
+# Create the database tables and seed with demo data (Optional)
+./vendor/bin/sail artisan migrate --seed
+```
+**If** you experience "connection refused", obtain Docker Network Bridge IPAM Gateway IP
+```
+docker network inspect bridge
+{
+"IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.17.0.0/16",
+                    "**Gateway**": "172.17.0.1"
+                }
+            ]
+        },
+}
+```
+Then replace assign the Gateway IP to DB_HOST within your .env
+
+The REST API should now be running and accessible at `http://localhost:80` or `http://localhost:8000`.
