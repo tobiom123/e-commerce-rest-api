@@ -116,3 +116,11 @@ Within terminal run the below command
 ```bash
 php closures.php "2010/03/30" "15/12/2016" "11-15-2012" "20130720"
 ```
+
+### Recursion Test
+
+Within terminal run the below command
+
+```bash
+php recursion.php '["apple", ["banana", "strawberry", "apple", ["banana", "strawberry", "apple"]]]' "apple"
+```
