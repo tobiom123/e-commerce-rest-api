@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Item;
 use App\Models\Order;
+use App\Models\OrderItem;
 use Illuminate\Support\Facades\DB;
 
 class OrderService
@@ -20,15 +21,20 @@ class OrderService
 
             $total = 0;
             foreach ($items as $itemData) {
-                $item = Item::findOrFail($itemData['id']);
+                $itemId = $itemData['id'];
+                $itemQuantity = $itemData['item_quantity'];
+                $item = Item::findOrFail($itemId);
 
-                if ($item->stock < $itemData['quantity']) {
+                if ($item->stock < $itemQuantity) {
                     throw new \Exception("Insufficient stock for item {$item->name}");
                 }
 
-                $order->items()->attach($item->id, ['quantity' => $itemData['quantity']]);
-                $item->decrement('stock', $itemData['quantity']);
-                $total += $item->price * $itemData['quantity'];
+                $orderItem = new OrderItem();
+                $orderItem->order_id = $order->id;
+                $orderItem->item_id = $itemId;
+                $orderItem->item_quantity = $itemQuantity;
+                $orderItem->save();
+                $total += $item->price * $itemQuantity;
             }
 
             $order->total = $total;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OrderResource;
 use App\Http\Resources\OrderResourceCollection;
 use App\Models\Order;
 use App\Services\OrderService;
@@ -28,16 +29,13 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request);
         $validated = $request->validate([
-            'items' => 'required|array',
-            'items.*.id' => 'required|exists:items,id',
-            'items.*.quantity' => 'required|integer|min:1'
+            'items' => 'required|array'
         ]);
 
         try {
-            $order = $this->orderService->processOrder(auth()->id, $validated['items']);
-            return response()->json(['message' => 'Order placed successfully.', 'order' => $order], 201);
+            $order = $this->orderService->processOrder($request->user()->id, $validated['items']);
+            return new OrderResource($order);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }

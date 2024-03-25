@@ -36,7 +36,6 @@ class DatabaseSeeder extends Seeder
                 $orderItem->item_id = $selectedItemId;
                 $orderItem->item_quantity = rand(1, 3);
                 $orderItem->save();
-                // $order->items()->attach($selectedItemId, ['item_quantity' => rand(1, 3)]);
             }
         });
     }
