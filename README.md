@@ -108,3 +108,11 @@ Within terminal run the below command
 ```bash
 php reflect.php
 ```
+
+### Closures Test
+
+Within terminal run the below command
+
+```bash
+php closures.php "2010/03/30" "15/12/2016" "11-15-2012" "20130720"
+```
